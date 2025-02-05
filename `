@@ -1,0 +1,30 @@
+initial commit :wq
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   .gitignore
+#	new file:   README.md
+#	new file:   backend/.env
+#	new file:   backend/server.js
+#	new file:   package-lock.json
+#	new file:   package.json
+#	new file:   postcss.config.js
+#	new file:   public/favicon.ico
+#	new file:   public/index.html
+#	new file:   public/logo192.png
+#	new file:   public/logo512.png
+#	new file:   public/manifest.json
+#	new file:   public/robots.txt
+#	new file:   src/App.js
+#	new file:   src/index.css
+#	new file:   src/index.js
+#	new file:   src/pages/TopMovie.js
+#	new file:   src/pages/empty-state.js
+#	new file:   src/pages/movie-loading.js
+#	new file:   tailwind.config.js
+#
