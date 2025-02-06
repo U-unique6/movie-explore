@@ -1,40 +1,33 @@
-// backend/app.js
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
+app.use(cors()); // Allow cross-origin requests
 
-// CORS configuration
-const corsOptions = {
-  origin: "https://movie-explore-theta.vercel.app", // Replace with your frontend's deployed URL
-  methods: ["GET"],
-};
-app.use(cors(corsOptions));
+const PORT = 5000;
 
-// Fetch movies from RapidAPI
-app.get("/movies", async (req, res) => {
+// API Route to fetch movies
+app.get('/api/movies', async (req, res) => {
   const options = {
-    method: "GET",
-    url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`, // API endpoint for movies
+    method: 'GET',
+    url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
     headers: {
-      "x-rapidapi-key": process.env.RAPIDAPI_KEY, // Set your RapidAPI key
-      "x-rapidapi-host": process.env.RAPIDAPI_HOST, // Set your RapidAPI host
-    },
+      'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+      'x-rapidapi-host': process.env.RAPIDAPI_HOST
+    }
   };
 
   try {
     const response = await axios.request(options);
-    res.json(response.data); // Send the fetched data as JSON
+    res.json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to fetch movies" }); // Handle errors
+    res.status(500).json({ error: 'Failed to fetch movies' });
   }
 });
 
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Backend server is running on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-module.exports = app;
