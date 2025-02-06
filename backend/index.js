@@ -1,46 +1,34 @@
-// index.js
+// api/movies.js
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
+app.use(cors());
 
-// Updated CORS configuration
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET"],
-  })
-);
-
-// API Route to fetch movies
-app.get("/api/movies", async (req, res) => {
-  const options = {
-    method: "GET",
-    url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
-    headers: {
-      "x-rapidapi-key": process.env.RAPIDAPI_KEY,
-      "x-rapidapi-host": process.env.RAPIDAPI_HOST,
-    },
-  };
+const handler = async (req, res) => {
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
+    const options = {
+      method: "GET",
+      url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
+      headers: {
+        "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+        "x-rapidapi-host": process.env.RAPIDAPI_HOST,
+      },
+    };
+
     const response = await axios.request(options);
-    res.json(response.data);
+    return res.status(200).json(response.data);
   } catch (error) {
-    console.error("API Error:", error.message);
-    res.status(500).json({ error: "Failed to fetch movies" });
+    console.error("API Error:", error);
+    return res.status(500).json({ error: "Failed to fetch movies" });
   }
-});
+};
 
-// Development server (will only run locally)
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-}
+app.get("/api/movies", handler);
 
-// Export for Vercel
 module.exports = app;
