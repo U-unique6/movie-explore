@@ -5,7 +5,7 @@ import Cors from "cors";
 // Initialize CORS middleware
 const cors = Cors({
   methods: ["GET", "HEAD"],
-  origin: "https://movie-explore-app.vercel.app", // Be more specific in production, e.g., 'https://yourdomain.com'
+  origin: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`, // Be more specific in production, e.g., 'https://yourdomain.com'
   credentials: true,
 });
 
