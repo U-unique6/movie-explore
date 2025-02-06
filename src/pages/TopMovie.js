@@ -17,7 +17,7 @@ const TopMovies = () => {
     const fetchMovies = async () => {
       try {
         const response = await axios.get(
-          "https://movie-explore-vvve-umanshi.vercel.app/movies"
+          "https://movie-explore-vvve.vercel.app/movies"
         );
         setMovies(response.data);
         setFilteredMovies(response.data);
