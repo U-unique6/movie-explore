@@ -3,10 +3,11 @@ const axios = require("axios");
 import Cors from "cors";
 
 // Initialize CORS middleware
+const FRONTEND_URL = "https://movie-explore-app.vercel.app";
 const cors = Cors({
   methods: ["GET", "HEAD"],
   // Set origin to your frontend domain
-  origin: `${process.env}.https://movie-explore-app.vercel.app` || "*", // e.g., "https://your-frontend-domain.com"
+  origin: process.env.FRONTEND_URL || "https://localhost:3000", // e.g., "https://your-frontend-domain.com"
   credentials: true,
 });
 
