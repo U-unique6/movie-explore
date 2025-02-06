@@ -1,21 +1,26 @@
-// index.js
-const express = require("express");
 const axios = require("axios");
-const cors = require("cors");
-require("dotenv").config();
 
-const app = express();
+// CORS handling
+const allowCors = (fn) => async (req, res) => {
+  // Set CORS headers to allow cross-origin requests
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Allows all origins, or set to a specific domain if needed
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS"); // Allow GET and OPTIONS methods
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, x-rapidapi-key, x-rapidapi-host"
+  ); // Allow custom headers
 
-// Updated CORS configuration
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET"],
-  })
-);
+  // Handle pre-flight request (OPTIONS request)
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
 
-// API Route to fetch movies
-app.get("/api/movies", async (req, res) => {
+  // Call the original function
+  return fn(req, res);
+};
+
+const fetchMovies = async (req, res) => {
   const options = {
     method: "GET",
     url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
@@ -27,20 +32,12 @@ app.get("/api/movies", async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    res.json(response.data);
+    res.status(200).json(response.data);
   } catch (error) {
-    console.error("API Error:", error.message);
+    console.error(error);
     res.status(500).json({ error: "Failed to fetch movies" });
   }
-});
+};
 
-// Development server (will only run locally)
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-}
-
-// Export for Vercel
-module.exports = app;
+// Wrap the movie fetch function with CORS
+module.exports = allowCors(fetchMovies);
