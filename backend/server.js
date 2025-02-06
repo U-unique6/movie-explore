@@ -10,6 +10,7 @@ const PORT = "https://movie-explore-theta.vercel.app/";
 
 // API Route to fetch movies
 app.get("/api/movies", async (req, res) => {
+  console.log("hello");
   const options = {
     method: "GET",
     url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
