@@ -7,7 +7,7 @@ const FRONTEND_URL = "https://movie-explore-app.vercel.app";
 const cors = Cors({
   methods: ["GET", "HEAD"],
   // Set origin to your frontend domain
-  origin: process.env.FRONTEND_URL || "https://localhost:3000", // e.g., "https://your-frontend-domain.com"
+  origin: process.env.RAPIDAPI_HOST || "https://localhost:3000", // e.g., "https://your-frontend-domain.com"
   credentials: true,
 });
 
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
   await runMiddleware(req, res, cors);
 
   // Set additional CORS headers for safety
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "*");
+  res.setHeader("Access-Control-Allow-Origin", process.env.RAPIDAPI_HOST || "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
