@@ -1,16 +1,11 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
-app.use(cors()); // Allow cross-origin requests
+app.use(cors());
 
-const PORT = process.env.PORT || 3000; 
-
-
-app.get("/api/movies", async (req, res) => {
-  console.log("hello");
+app.get("/movies", async (req, res) => {
   const options = {
     method: "GET",
     url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
@@ -29,7 +24,4 @@ app.get("/api/movies", async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
