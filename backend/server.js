@@ -6,9 +6,9 @@ require("dotenv").config();
 const app = express();
 app.use(cors()); // Allow cross-origin requests
 
-const PORT = "https://movie-explore-theta.vercel.app/";
+const PORT = process.env.PORT || 3000; 
 
-// API Route to fetch movies
+
 app.get("/api/movies", async (req, res) => {
   console.log("hello");
   const options = {
@@ -29,6 +29,7 @@ app.get("/api/movies", async (req, res) => {
   }
 });
 
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
