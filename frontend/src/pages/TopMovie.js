@@ -18,7 +18,7 @@ const TopMovies = () => {
       axios.defaults.withCredentials = true;
       try {
         const response = await axios.get(
-          "https://movie-explore-app.vercel.app/movies"
+          "https://movie-explore-api.vercel.app/movies"
         ); // Update with live backend URL
         setMovies(response.data);
         setFilteredMovies(response.data);
