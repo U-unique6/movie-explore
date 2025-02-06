@@ -5,7 +5,8 @@ import Cors from "cors";
 // Initialize CORS middleware
 const cors = Cors({
   methods: ["GET", "HEAD"],
-  origin: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`, // Be more specific in production, e.g., 'https://yourdomain.com'
+  // Set origin to your frontend domain
+  origin: `${process.env}.https://movie-explore-app.vercel.app` || "*", // e.g., "https://your-frontend-domain.com"
   credentials: true,
 });
 
@@ -24,6 +25,11 @@ function runMiddleware(req, res, fn) {
 export default async function handler(req, res) {
   // Run the CORS middleware
   await runMiddleware(req, res, cors);
+
+  // Set additional CORS headers for safety
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });

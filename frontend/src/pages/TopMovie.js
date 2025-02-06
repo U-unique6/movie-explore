@@ -18,7 +18,7 @@ const TopMovies = () => {
       axios.defaults.withCredentials = true;
       try {
         const response = await axios.get(
-          `https://imdb236.p.rapidapi.com/imdb/top250-movies`
+          "https://movie-explore-api.vercel.app/movies"
         ); // Update with live backend URL
         setMovies(response.data);
         setFilteredMovies(response.data);
