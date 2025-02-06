@@ -14,7 +14,8 @@ app.get("/movies", async (req, res) => {
       "x-rapidapi-host": process.env.RAPIDAPI_HOST,
     },
   };
-
+console.log(process.env.RAPIDAPI_KEY);
+console.log(process.env.RAPIDAPI_HOST);
   try {
     const response = await axios.request(options);
     res.json(response.data);
