@@ -1,22 +1,22 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const axios = require("axios");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 app.use(cors()); // Allow cross-origin requests
 
-const PORT = 5000;
+const PORT = "https://movie-explore-theta.vercel.app/";
 
 // API Route to fetch movies
-app.get('/api/movies', async (req, res) => {
+app.get("/api/movies", async (req, res) => {
   const options = {
-    method: 'GET',
+    method: "GET",
     url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
     headers: {
-      'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-      'x-rapidapi-host': process.env.RAPIDAPI_HOST
-    }
+      "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+      "x-rapidapi-host": process.env.RAPIDAPI_HOST,
+    },
   };
 
   try {
@@ -24,7 +24,7 @@ app.get('/api/movies', async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch movies' });
+    res.status(500).json({ error: "Failed to fetch movies" });
   }
 });
 
