@@ -1,26 +1,34 @@
+// api/movies.js
 const axios = require("axios");
+import Cors from "cors";
 
-// CORS handling
-const allowCors = (fn) => async (req, res) => {
-  // Set CORS headers to allow cross-origin requests
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Allows all origins, or set to a specific domain if needed
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS"); // Allow GET and OPTIONS methods
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, x-rapidapi-key, x-rapidapi-host"
-  ); // Allow custom headers
+// Initialize CORS middleware
+const cors = Cors({
+  methods: ["GET", "HEAD"],
+  origin: "https://movie-explore-app.vercel.app", // Be more specific in production, e.g., 'https://yourdomain.com'
+  credentials: true,
+});
 
-  // Handle pre-flight request (OPTIONS request)
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+// Helper function to run middleware
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+      return resolve(result);
+    });
+  });
+}
+
+export default async function handler(req, res) {
+  // Run the CORS middleware
+  await runMiddleware(req, res, cors);
+
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Call the original function
-  return fn(req, res);
-};
-
-const fetchMovies = async (req, res) => {
   const options = {
     method: "GET",
     url: `https://${process.env.RAPIDAPI_HOST}/imdb/top250-movies`,
@@ -32,12 +40,9 @@ const fetchMovies = async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    res.status(200).json(response.data);
+    return res.status(200).json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to fetch movies" });
+    return res.status(500).json({ error: "Failed to fetch movies" });
   }
-};
-
-// Wrap the movie fetch function with CORS
-module.exports = allowCors(fetchMovies);
+}
